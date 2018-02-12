@@ -28,8 +28,6 @@ public class Donor {
         }
         return false;
 
-        //return this.name.equals(another.name) && this.zipcode.equals(another.zipcode);
-
     }
 
 	// override hashcode()
@@ -41,10 +39,12 @@ public class Donor {
         return hash;
     }
 
+    
     public String getName() {
         return name;
     }
 
+    
     public String getZipcode() {
         return zipcode;
     }
