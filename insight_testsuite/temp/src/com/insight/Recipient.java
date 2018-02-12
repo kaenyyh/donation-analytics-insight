@@ -1,46 +1,53 @@
 package com.insight;
 
+/*
+ *	This class define Recipient object with fields of Recipient name, zipcode and year 
+ *	To use Recipient object as key of HashMap, equals() and hashcode() are overrided
+ */
 
 public class Recipient {
-    private String id;
+	// fields:
+	private String id;
     private String zipcode;
     private String year;
 
-/*    public Recipient() {
-
-    }*/
-
     public Recipient(String id, String zipcode, String year) {
+    	// Constructor:
         this.id = id;
         this.zipcode = zipcode;
         this.year = year;
     }
 
+    
     public String getId() {
         return this.id;
     }
 
+    
     public String getZipcode() {
         return this.zipcode;
     }
+    
+    
     public String getYear() {
         return this.year;
     }
 
+    
     @Override
     public boolean equals(Object obj) {
-/*        if (this == obj) {
+        if (this == obj) {
             return true;
-        }*/
+        }
+        
         if ((obj instanceof Recipient)) {
             Recipient another = (Recipient) obj;
             return this.id.equals(another.id) && this.zipcode.equals(another.zipcode) && this.year.equals(another.year);
         }
         return false;
-
-
     }
 
+    
     @Override
     public int hashCode() {
         int hash = 3;

@@ -4,26 +4,37 @@ package com.insight;
 import java.io.*;
 import java.util.*;
 
+/*
+ *	This main class read the two input files and write one output file
+ *	1. it has been exported as executable jar file (used in run.sh)
+ *	2. Input data check criteria has been applied to verify acceptability of input information
+ *	3. Create HashMap by calling other class
+ */
+
 public class Donation_Analytics {
 
-    public static void main (String[] args) {
+    public static void main (String[] args) throws IOException{
 
         // specify the files path and name for two input files and one output file:
-
         String percentileFile = "input/percentile.txt";
         String itcontFile = "input/itcont.txt";
         String repeatedDonorFile = "output/repeat_donors.txt";
 
-        if (args.length == 3) {
-             percentileFile = args[0];
-             itcontFile = args[1];
-             repeatedDonorFile = args[2];
+        // if 
+        if (args.length > 0) {
+        	if (args.length == 3) {
+        		percentileFile = args[0];
+        		itcontFile = args[1];
+        		repeatedDonorFile = args[2];
+        	} else {
+        		System.out.println("Please use it as: java program percentileFile ItcontFile outputFile");
+        	}
         }
 
 
         // First, read the percentile value from percentile.txt:
-        // initialize the percentile value:
-        int percentile = 0;
+        // initialize the percentile value 100:
+        int percentile = 100;
 
         try {
             // Using Scanner to read integer from input file:
@@ -33,8 +44,6 @@ public class Donation_Analytics {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // test: System.out.println("Percentile is : " + percentile);
-
 
         // Second, read the donation info. from itcont.txt:
         try {
@@ -59,7 +68,6 @@ public class Donation_Analytics {
             // for each new input, use binary search to find its position in order
             // time complexity: insert O(logn) and shift current list O(n)
 
-            // test: ArrayList<String> tmpOut = new ArrayList<>();
 
             while ((s = in.readLine()) != null) {
                 String[] donation = s.split("\\|");  // "|" is metacharacter in regex, use "\\" to escape it
@@ -105,15 +113,11 @@ public class Donation_Analytics {
                     if (!recipientMap.containsKey(recipient)) {
                         recipientMap.put(recipient, donateAmount);
                     } else {
-                        // The methodology to find the percentile amt:
-                        // maintain the ascending order of ArrayList of amt
-                        // for each new input, use binary search to find its position in order
-                        // time complexity: insert O(logn) and shift current list O(n)
+                        // .addNew method will insert the newInput to its sorted position
                         recipientMap.get(recipient).addNew(amount);
                     }
 
                     // write output to output file:
-                    // test: tmpOut.add(recipient.getId() + "|" + recipient.getZipcode() + "|" +recipient.getYear() + "|" + recipientMap.get(recipient).getPercentile(percentile) + "|" + recipientMap.get(recipient).getTotalAmount() + "|" + recipientMap.get(recipient).getTotalNumber());
                     out.write(recipient.getId() + "|" + recipient.getZipcode() + "|" +recipient.getYear() + "|" + recipientMap.get(recipient).getPercentile(percentile) + "|" + recipientMap.get(recipient).getTotalAmount() + "|" + recipientMap.get(recipient).getTotalNumber());
                     out.newLine();
                 }
