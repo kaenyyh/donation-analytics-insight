@@ -34,7 +34,7 @@ function check_project_struct {
   find_file_or_dir_in_project ${PROJECT_PATH} input
   find_file_or_dir_in_project ${PROJECT_PATH} output
 
-  fine_file_or_dir_in_project ${PROJECT_PATH} Donation_Analytics.jar 
+  fine_file_or_dir_in_project ${PROJECT_PATH} DonationAnalytics.jar 
 
 }
 
@@ -51,7 +51,7 @@ function setup_testing_input_output {
   cp -r ${PROJECT_PATH}/run.sh ${TEST_OUTPUT_PATH}
   cp -r ${PROJECT_PATH}/input ${TEST_OUTPUT_PATH}
   cp -r ${PROJECT_PATH}/output ${TEST_OUTPUT_PATH}
-  cp -r ${PROJECT_PATH}/Donation_Analytics.jar ${TEST_OUTPUT_PATH}
+  cp -r ${PROJECT_PATH}/DonationAnalytics.jar ${TEST_OUTPUT_PATH}
 
   rm -r ${TEST_OUTPUT_PATH}/input/*
   rm -r ${TEST_OUTPUT_PATH}/output/*
