@@ -50,5 +50,7 @@ There are five java files:
 
 ### 5. Discussion
 
-**5.1** Binary Search + Insertion or Append + Sort
+**5.1 Binary Search + Insertion or Append + Sort**
+
+
 
