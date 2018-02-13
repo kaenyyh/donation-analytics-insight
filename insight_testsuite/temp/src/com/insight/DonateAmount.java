@@ -60,7 +60,7 @@ public class DonateAmount {
 
     public int getPercentile (int percentile) {
     	// To get the donation amount for given percentile:
-        int percentileIndex = (percentile / 100) * totalNumber;
+        int percentileIndex = (int)((percentile * 1.0 / 100) * totalNumber);
 
         // round the percentile amount to nearest whole dollar, use Math.rint()
         return (int)Math.rint((double)amountList.get(percentileIndex));

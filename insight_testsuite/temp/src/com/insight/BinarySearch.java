@@ -15,15 +15,15 @@ public class BinarySearch {
         int rightIndex = donateList.size() - 1;
         
         
-        while (leftIndex <= rightIndex) {
+        while (leftIndex < rightIndex - 1) {
             int midIndex = leftIndex + (rightIndex - leftIndex) / 2;
 
             if (donateList.get(midIndex) == newAmount) {
                 return midIndex;
             } else if (donateList.get(midIndex) < newAmount) {
-                leftIndex = midIndex + 1;
+                leftIndex = midIndex ;
             } else {
-                rightIndex = midIndex - 1;
+                rightIndex = midIndex ;
             }
 
         }

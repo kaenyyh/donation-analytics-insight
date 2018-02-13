@@ -54,8 +54,8 @@ public class Donation_Analytics {
 
             // initialize HashMap of donor and recipient:
             // DonorMap key: Donor (.name, .zipcode)
-            // DonorMap value: Recipient (.id, .year, .zipcode]
-            Map<Donor, Recipient> donorMap = new HashMap<Donor, Recipient>();
+            // DonorMap value: Recipient (.id, .year, .zipcode, .amount)
+            Map<Donor, RecipientWithAmount> donorMap = new HashMap<Donor, RecipientWithAmount>();
 
 
             // save donation information of the repeated donor into RecipientMap
@@ -99,8 +99,11 @@ public class Donation_Analytics {
                 // test: System.out.println(recipientId + "|" + donorName + "|" + zipcode + "|" + year + "|" + amount);
 
 
-                // create object:
+                // create object of Donor Map key and value:
                 Donor donor = new Donor(donorName, zipcode);
+                RecipientWithAmount recipientWithAmount = new RecipientWithAmount(recipientId, zipcode, year, amount);
+                
+                // create object of Recipient Map key and value:
                 Recipient recipient = new Recipient(recipientId, zipcode, year);
                 DonateAmount donateAmount = new DonateAmount(new ArrayList<Integer>(Arrays.asList(amount)));
              
@@ -108,7 +111,28 @@ public class Donation_Analytics {
                 // check if the donor is repeated or not
                 // if it is repeated donor, then save this donation to recipient hashMap
                 if (!donorMap.containsKey(donor) || (donorMap.containsKey(donor) && donorMap.get(donor).getYear().equals(year))) {
-                    donorMap.put(donor, recipient);
+                    donorMap.put(donor, recipientWithAmount);
+                } else if ((donorMap.containsKey(donor) && Integer.parseInt(donorMap.get(donor).getYear()) > Integer.parseInt(year))) {
+                	// consideration on out of order chronologically
+                	// if a previous year record appear after later donation
+                	// 1. put later donation as repeated donation to Recipient Map, 
+                	recipient.setId(donorMap.get(donor).getId());
+                	recipient.setZipcode(donorMap.get(donor).getZipcode());
+                	recipient.setYear(donorMap.get(donor).getYear());
+                	donateAmount = new DonateAmount(new ArrayList<Integer>(Arrays.asList(donorMap.get(donor).getAmount())));
+                    if (!recipientMap.containsKey(recipient)) {
+                        recipientMap.put(recipient, donateAmount);
+                    } else {
+                        // .addNew method will insert the newInput to its sorted position
+                        recipientMap.get(recipient).addNew(donorMap.get(donor).getAmount());
+                    }
+                    System.out.println(recipient.getId() + "|"+recipient.getZipcode() +"|"+ recipient.getYear());
+                    
+                    // 2. add earlier donation to Donor Map
+                    donorMap.remove(donor);
+                    donorMap.put(donor, recipientWithAmount);             
+                    out.write(recipient.getId() + "|" + recipient.getZipcode() + "|" +recipient.getYear() + "|" + recipientMap.get(recipient).getPercentile(percentile) + "|" + recipientMap.get(recipient).getTotalAmount() + "|" + recipientMap.get(recipient).getTotalNumber());
+                    out.newLine();
                 } else {
                     if (!recipientMap.containsKey(recipient)) {
                         recipientMap.put(recipient, donateAmount);
@@ -116,7 +140,7 @@ public class Donation_Analytics {
                         // .addNew method will insert the newInput to its sorted position
                         recipientMap.get(recipient).addNew(amount);
                     }
-
+                
                     // write output to output file:
                     out.write(recipient.getId() + "|" + recipient.getZipcode() + "|" +recipient.getYear() + "|" + recipientMap.get(recipient).getPercentile(percentile) + "|" + recipientMap.get(recipient).getTotalAmount() + "|" + recipientMap.get(recipient).getTotalNumber());
                     out.newLine();
@@ -129,5 +153,21 @@ public class Donation_Analytics {
             e.printStackTrace();
         }
     }
+    
+    
+    private static void addToRecipientMap(Map<Recipient, DonateAmount> recipientMap, Recipient recipient, DonateAmount donateAmount, int amount) {
+        if (!recipientMap.containsKey(recipient)) {
+            recipientMap.put(recipient, donateAmount);
+        } else {
+            // .addNew method will insert the newInput to its sorted position
+            recipientMap.get(recipient).addNew(amount);
+        }
+        return;
+    }
 }
+
+
+
+
+
 
