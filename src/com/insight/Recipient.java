@@ -33,12 +33,25 @@ public class Recipient {
         return this.year;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
+    }
+    
+    
+    public void setYear(String year) {
+        this.year = year;
+    }
+
     @Override
     public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
+//        if (this == obj) {
+//            return true;
+//        }
         
         if ((obj instanceof Recipient)) {
             Recipient another = (Recipient) obj;
